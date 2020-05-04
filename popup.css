@@ -1,0 +1,34 @@
+body{
+    width: 250px;
+    height:450px;
+    background-color: black;
+    text-align: center;
+}
+.button {
+    background-color: #76448A;
+    border: none;
+    color: white;
+    padding: 15px 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 1px 1px;
+    cursor: pointer;
+    width: 100%
+  }
+  h1 {
+    color: white
+  }
+
+.container {
+    background-color:black;
+    width: 250px;
+    height: 250px;
+}
+
+/* resize images */
+.container img {
+    width: 100%;
+    height: auto;
+}

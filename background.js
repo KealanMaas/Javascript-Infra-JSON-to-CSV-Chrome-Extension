@@ -1,13 +1,20 @@
 
 //Retrieve object from DOM, submit it to Iterate Object for flattening/conversion and generate file based on response
-function doStuffWithDom(domContent) {
-  let docContentCSV = domContent;
-  console.log(JSON.parse(docContentCSV));
-  docContentCSV = iterateObject(JSON.parse(docContentCSV));
-
-  console.log(docContentCSV);
-  let doc = URL.createObjectURL( new Blob([docContentCSV], {type: 'application/octet-binary'}) );
-  chrome.downloads.download({ url: doc, filename: "test.csv", conflictAction: 'overwrite', saveAs: true });
+function doStuffWithDom(domContent,type) {
+  if(type=="JSON"){
+    let docContentJSON = domContent;
+    let doc = URL.createObjectURL( new Blob([docContentJSON], {type: 'application/octet-binary'}) );
+    chrome.downloads.download({ url: doc, filename: "infrastructure.json", conflictAction: 'overwrite', saveAs: true });
+  }
+  else if(type=="CSV"){
+    let docContentCSV = domContent;
+    console.log(JSON.parse(docContentCSV));
+    docContentCSV = iterateObject(JSON.parse(docContentCSV));
+  
+    console.log(docContentCSV);
+    let doc = URL.createObjectURL( new Blob([docContentCSV], {type: 'application/octet-binary'}) );
+    chrome.downloads.download({ url: doc, filename: "infrastructure.csv", conflictAction: 'overwrite', saveAs: true });
+  }
 }
 
 //Iterate JSON object, submit each row object to flatten to be flattened. 
@@ -67,7 +74,24 @@ function replacer(key, value){
   return value;
 }
 
-//Listen for user interaction with chrome extension and submit object to doStuffWithDom
-chrome.browserAction.onClicked.addListener(function (tab) {
-      chrome.tabs.sendMessage(tab.id, {text: 'report_back'}, doStuffWithDom);
+
+chrome.runtime.onMessage.addListener( function(request,sender,sendResponse)
+{
+    if( request.greeting === "callBackgroundCSV" )
+    {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {greeting: "callContent"}, function(response) {
+          doStuffWithDom(response.farewell,"CSV");
+        });
+      });
+    }
+    else if(request.greeting === "callBackgroundJSON")
+    {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {greeting: "callContent"}, function(response) {
+          doStuffWithDom(response.farewell,"JSON");
+        });
+      });
+    }
 });
+

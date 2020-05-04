@@ -13,8 +13,10 @@
       "js": ["content.js"]
     }],
     "browser_action": {
-      "default_title": "Json to CSV"
+      "default_icon": "logo.png",
+      "default_title": "Json to CSV",
+      "default_popup": "popup.html"
+
     },
-  
     "permissions": ["activeTab","<all_urls>","downloads","background"]
   }
