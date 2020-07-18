@@ -52,7 +52,8 @@ function convertToCSV(obj){
   const items = obj.rows
   //New version where we reducde object to retrieve all keys from every object and use them as the unique keys
   const result = Object.keys(Object.assign({}, ...items));
-  //console.log(result);
+  result.sort();
+
   let csv = items.map(row => result.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(' , '))
   csv.unshift(result.join(' , '))
   csv = csv.join('\r\n')
@@ -68,7 +69,8 @@ function replacer(key, value){
     value ='_';
   }
   if(value.indexOf(',') > -1){
-    value = value.replace(/,/g, '-');
+    //value = value.replace(/,/g, '-');
+    value = value.replace(/,/g, '.');
   }
 }
   return value;
