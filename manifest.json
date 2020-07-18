@@ -9,7 +9,7 @@
       "scripts": ["background.js"]
     },
     "content_scripts": [{
-      "matches": ["*://*.datadoghq.com/*"],
+      "matches": ["*://*/*"],
       "js": ["content.js"]
     }],
     "browser_action": {
